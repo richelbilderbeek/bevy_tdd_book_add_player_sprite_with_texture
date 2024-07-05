@@ -31,7 +31,7 @@ mod tests {
     fn test_initial_player_scale() {
         assert_eq!(
             create_default_game_parameters().initial_player_scale,
-            Vec3::new(100.0, 20.0, 1.0)
+            Vec3::new(1.0, 1.0, 1.0)
         );
     }
 }

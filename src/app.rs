@@ -6,6 +6,16 @@ pub struct Player;
 
 pub fn create_app(game_parameters: GameParameters) -> App {
     let mut app = App::new();
+
+    // Only add this plugin in testing.
+    // The main app will assume it to be absent
+
+    if cfg!(test) {
+        app.add_plugins(AssetPlugin::default());
+        app.add_plugins(TaskPoolPlugin::default());
+        app.init_asset::<bevy::render::texture::Image>();
+    }
+
     let add_player_fn = move |/* no mut? */ commands: Commands,
                               asset_server: Res<AssetServer>| {
         add_player_with_sprite_from_assets(
@@ -190,7 +200,7 @@ mod tests {
         let mut app = create_app(create_default_game_parameters());
         app.update();
         let v = get_all_components_names(&app);
-        assert_eq!(v.len(), 15);
+        assert_eq!(v.len(), 32);
     }
 
     #[test]
