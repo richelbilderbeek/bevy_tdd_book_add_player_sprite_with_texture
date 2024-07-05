@@ -8,7 +8,7 @@ pub fn create_app(game_parameters: GameParameters) -> App {
     let mut app = App::new();
     let add_player_fn = move |/* no mut? */ commands: Commands,
                               asset_server: Res<AssetServer>| {
-        add_player_with_sprite_at_pos_with_scale(
+        add_player_with_sprite_from_assets(
             commands,
             asset_server,
             game_parameters.initial_player_position,
@@ -32,7 +32,7 @@ fn add_player_with_sprite(mut commands: Commands) {
     commands.spawn((SpriteBundle { ..default() }, Player));
 }
 
-fn add_player_with_sprite_at_pos_with_scale(
+fn add_player_with_sprite_from_assets(
     mut commands: Commands,
     asset_server: Res<AssetServer>,
     initial_player_position: Vec3,
@@ -81,11 +81,10 @@ fn get_player_scale(app: &mut App) -> Vec3 {
 #[cfg(test)]
 fn get_player_has_texture(app: &mut App) -> bool {
     let mut query = app.world.query::<(&Handle<Image>, &Player)>();
-    let (handle, player) = query.single(&app.world);
-    // I feel I should use the Handle<Image> in some way,
-    // but how?
-    // handle.
-    true
+    let (handle, _) = query.single(&app.world);
+    // I feel I should use the Handle<Image> in some way, but how?
+
+    false // Incorrect! How do I determine if the 'Handle<Image>' holds a texture?
 }
 
 #[cfg(test)]
