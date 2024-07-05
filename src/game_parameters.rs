@@ -8,7 +8,7 @@ pub struct GameParameters {
 pub fn create_default_game_parameters() -> GameParameters {
     GameParameters {
         initial_player_position: Vec3::new(0.0, 0.0, 0.0),
-        initial_player_scale: Vec3::new(100.0, 20.0, 1.0),
+        initial_player_scale: Vec3::new(1.0, 1.0, 1.0),
     }
 }
 

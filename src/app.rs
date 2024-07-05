@@ -6,9 +6,11 @@ pub struct Player;
 
 pub fn create_app(game_parameters: GameParameters) -> App {
     let mut app = App::new();
-    let add_player_fn = move |/* no mut? */ commands: Commands| {
+    let add_player_fn = move |/* no mut? */ commands: Commands,
+                              asset_server: Res<AssetServer>| {
         add_player_with_sprite_at_pos_with_scale(
             commands,
+            asset_server,
             game_parameters.initial_player_position,
             game_parameters.initial_player_scale,
         );
@@ -32,6 +34,7 @@ fn add_player_with_sprite(mut commands: Commands) {
 
 fn add_player_with_sprite_at_pos_with_scale(
     mut commands: Commands,
+    asset_server: Res<AssetServer>,
     initial_player_position: Vec3,
     initial_player_scale: Vec3,
 ) {
@@ -42,6 +45,7 @@ fn add_player_with_sprite_at_pos_with_scale(
                 scale: initial_player_scale,
                 ..default()
             },
+            texture: asset_server.load("bevy_bird_dark.png"),
             ..default()
         },
         Player,
@@ -72,6 +76,16 @@ fn get_player_scale(app: &mut App) -> Vec3 {
     let mut query = app.world.query::<(&Transform, &Player)>();
     let (transform, _) = query.single(&app.world);
     transform.scale
+}
+
+#[cfg(test)]
+fn get_player_has_texture(app: &mut App) -> bool {
+    let mut query = app.world.query::<(&Handle<Image>, &Player)>();
+    let (handle, player) = query.single(&app.world);
+    // I feel I should use the Handle<Image> in some way,
+    // but how?
+    // handle.
+    true
 }
 
 #[cfg(test)]
@@ -145,7 +159,6 @@ mod tests {
         assert_eq!(get_player_coordinat(&mut app), initial_coordinat);
     }
 
-
     #[test]
     fn test_player_has_a_custom_scale() {
         let player_scale = Vec3::new(1.1, 2.2, 3.3);
@@ -154,6 +167,15 @@ mod tests {
         let mut app = create_app(game_parameters);
         app.update();
         assert_eq!(get_player_scale(&mut app), player_scale);
+    }
+
+    #[test]
+    fn test_player_has_a_texture() {
+        let mut app = create_app(create_default_game_parameters());
+        app.update();
+        // I can see the player has a texture,
+        // and here I want to test that
+        assert!(get_player_has_texture(&mut app));
     }
 
     #[test]
