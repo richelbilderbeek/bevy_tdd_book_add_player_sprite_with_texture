@@ -197,11 +197,11 @@ mod tests {
     #[test]
     fn test_player_has_no_texture() {
         let params = create_default_game_parameters();
-        assert!(!params.use_texture)
+        assert!(!params.use_texture);
         let mut app = create_app(params);
         app.update();
-        // I can see the player has a texture,
-        // and here I want to test that
+        // The player has no texture
+        // and here I test that
         assert!(!get_player_has_texture(&mut app));
     }
 
@@ -209,7 +209,7 @@ mod tests {
     fn test_player_has_a_texture() {
         let mut params = create_default_game_parameters();
         params.use_texture = true;
-        assert!(params.use_texture)
+        assert!(params.use_texture);
         let mut app = create_app(params);
         app.update();
         // I can see the player has a texture,
