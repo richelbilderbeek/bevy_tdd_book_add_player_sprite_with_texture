@@ -3,12 +3,14 @@ use bevy::prelude::*;
 pub struct GameParameters {
     pub initial_player_position: Vec3,
     pub initial_player_scale: Vec3,
+    pub use_texture: bool,
 }
 
 pub fn create_default_game_parameters() -> GameParameters {
     GameParameters {
         initial_player_position: Vec3::new(0.0, 0.0, 0.0),
         initial_player_scale: Vec3::new(1.0, 1.0, 1.0),
+        use_texture: false,
     }
 }
 
@@ -33,5 +35,10 @@ mod tests {
             create_default_game_parameters().initial_player_scale,
             Vec3::new(1.0, 1.0, 1.0)
         );
+    }
+
+    #[test]
+    fn test_use_textire() {
+        assert_eq!(create_default_game_parameters().use_texture, false);
     }
 }

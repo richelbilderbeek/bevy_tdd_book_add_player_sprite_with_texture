@@ -7,9 +7,9 @@ pub struct Player;
 pub fn create_app(game_parameters: GameParameters) -> App {
     let mut app = App::new();
 
-    // Only add this plugin in testing.
-    // The main app will assume it to be absent
-
+    // Only add these plugin in testing.
+    // The main app will assume it to be absent.
+    // Adding DefaultPlugins will cause tests to crash
     if cfg!(test) {
         app.add_plugins(AssetPlugin::default());
         app.add_plugins(TaskPoolPlugin::default());
@@ -23,6 +23,7 @@ pub fn create_app(game_parameters: GameParameters) -> App {
             asset_server,
             game_parameters.initial_player_position,
             game_parameters.initial_player_scale,
+            game_parameters.use_texture,
         );
     };
     app.add_systems(Startup, add_player_fn);
@@ -47,19 +48,34 @@ fn add_player_with_sprite_from_assets(
     asset_server: Res<AssetServer>,
     initial_player_position: Vec3,
     initial_player_scale: Vec3,
+    use_texture: bool,
 ) {
-    commands.spawn((
-        SpriteBundle {
-            transform: Transform {
-                translation: initial_player_position,
-                scale: initial_player_scale,
+    if use_texture {
+        commands.spawn((
+            SpriteBundle {
+                transform: Transform {
+                    translation: initial_player_position,
+                    scale: initial_player_scale,
+                    ..default()
+                },
+                texture: asset_server.load("bevy_bird_dark.png"),
                 ..default()
             },
-            texture: asset_server.load("bevy_bird_dark.png"),
-            ..default()
-        },
-        Player,
-    ));
+            Player,
+        ));
+    } else {
+        commands.spawn((
+            SpriteBundle {
+                transform: Transform {
+                    translation: initial_player_position,
+                    scale: initial_player_scale,
+                    ..default()
+                },
+                ..default()
+            },
+            Player,
+        ));
+    }
 }
 
 #[cfg(test)]
@@ -179,8 +195,22 @@ mod tests {
     }
 
     #[test]
+    fn test_player_has_no_texture() {
+        let params = create_default_game_parameters();
+        assert!(!params.use_texture)
+        let mut app = create_app(params);
+        app.update();
+        // I can see the player has a texture,
+        // and here I want to test that
+        assert!(!get_player_has_texture(&mut app));
+    }
+
+    #[test]
     fn test_player_has_a_texture() {
-        let mut app = create_app(create_default_game_parameters());
+        let mut params = create_default_game_parameters();
+        params.use_texture = true;
+        assert!(params.use_texture)
+        let mut app = create_app(params);
         app.update();
         // I can see the player has a texture,
         // and here I want to test that
