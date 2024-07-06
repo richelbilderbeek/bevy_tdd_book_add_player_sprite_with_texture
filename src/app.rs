@@ -107,10 +107,8 @@ fn get_player_scale(app: &mut App) -> Vec3 {
 #[cfg(test)]
 fn get_player_has_texture(app: &mut App) -> bool {
     let mut query = app.world.query::<(&Handle<Image>, &Player)>();
-    let (_handle, _) = query.single(&app.world);
-    // I feel I should use the Handle<Image> in some way, but how?
-
-    false // Incorrect! How do I determine if the 'Handle<Image>' holds a texture?
+    let (handle, _) = query.single(&app.world);
+    return handle.is_strong();
 }
 
 #[cfg(test)]
