@@ -92,21 +92,21 @@ fn count_n_players(app: &App) -> usize {
 
 #[cfg(test)]
 fn get_player_coordinat(app: &mut App) -> Vec3 {
-    let mut query = app.world().query::<(&Transform, &Player)>();
+    let mut query = app.world_mut().query::<(&Transform, &Player)>();
     let (transform, _) = query.single(&app.world());
     transform.translation
 }
 
 #[cfg(test)]
 fn get_player_scale(app: &mut App) -> Vec3 {
-    let mut query = app.world().query::<(&Transform, &Player)>();
+    let mut query = app.world_mut().query::<(&Transform, &Player)>();
     let (transform, _) = query.single(&app.world());
     transform.scale
 }
 
 #[cfg(test)]
 fn get_player_has_texture(app: &mut App) -> bool {
-    let mut query = app.world().query::<(&Handle<Image>, &Player)>();
+    let mut query = app.world_mut().query::<(&Handle<Image>, &Player)>();
     let (handle, _) = query.single(&app.world());
     return handle.is_strong();
 }
