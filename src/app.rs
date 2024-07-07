@@ -38,11 +38,6 @@ fn add_player(mut commands: Commands) {
     commands.spawn(Player);
 }
 
-#[cfg(test)]
-fn add_player_with_sprite(mut commands: Commands) {
-    commands.spawn((SpriteBundle { ..default() }, Player));
-}
-
 fn add_player_with_sprite_from_assets(
     mut commands: Commands,
     asset_server: Res<AssetServer>,
