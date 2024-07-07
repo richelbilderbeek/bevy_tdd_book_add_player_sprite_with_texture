@@ -39,6 +39,6 @@ mod tests {
 
     #[test]
     fn test_use_textire() {
-        assert_eq!(create_default_game_parameters().use_texture, false);
+        assert!(!create_default_game_parameters().use_texture);
     }
 }
