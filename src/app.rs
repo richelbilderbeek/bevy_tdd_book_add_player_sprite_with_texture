@@ -112,31 +112,8 @@ fn get_player_has_texture(app: &mut App) -> bool {
 }
 
 #[cfg(test)]
-fn get_all_components_names(app: &App) -> Vec<String> {
-    use std::str::FromStr;
-
-    let mut v: Vec<String> = Vec::new();
-    for c in app.world().components().iter() {
-        v.push(String::from_str(c.name()).unwrap());
-    }
-    v
-}
-
-#[cfg(test)]
-fn print_all_components_names(app: &App) {
-    for c in app.world().components().iter() {
-        println!("{}", c.name())
-    }
-}
-
-#[cfg(test)]
 mod tests {
     use super::*;
-
-    #[test]
-    fn test_testing() {
-        assert_eq!(1 + 1, 2)
-    }
 
     #[test]
     fn test_can_create_app() {
@@ -213,70 +190,5 @@ mod tests {
         // I can see the player has a texture,
         // and here I want to test that
         assert!(get_player_has_texture(&mut app));
-    }
-
-    #[test]
-    fn test_get_all_components_names_for_empty_app() {
-        let mut app = App::new();
-        app.update();
-        let v = get_all_components_names(&app);
-        assert_eq!(v.len(), 7);
-    }
-
-    #[test]
-    fn test_get_all_components_names_for_our_app() {
-        let mut app = create_app(create_default_game_parameters());
-        app.update();
-        let v = get_all_components_names(&app);
-        assert_eq!(v.len(), 32);
-    }
-
-    #[test]
-    fn test_print_names_of_empty_app() {
-        let mut app = App::new();
-        app.update();
-        print_all_components_names(&app);
-        /*
-        bevy_ecs::schedule::schedule::Schedules
-        bevy_ecs::reflect::AppTypeRegistry
-        bevy_app::main_schedule::MainScheduleOrder
-        bevy_app::main_schedule::FixedMainScheduleOrder
-        bevy_ecs::event::Events<bevy_app::app::AppExit>
-        */
-    }
-
-    #[test]
-    fn test_print_names_of_app_with_player() {
-        let mut app = App::new();
-        app.add_systems(Startup, add_player);
-        app.update();
-        print_all_components_names(&app);
-        /*
-        // First 5 of empty App, then
-        bevy_ecs::schedule::stepping::Stepping
-        bevy_tdd_book_add_player_sprite::app::Player
-        bevy_ecs::event::EventUpdateSignal
-        */
-    }
-
-    #[test]
-    fn test_print_names_of_app_with_player_sprite() {
-        let mut app = App::new();
-        app.add_systems(Startup, add_player_with_sprite);
-        app.update();
-        print_all_components_names(&app);
-        /*
-        // First 5 of empty App, then:
-        bevy_ecs::schedule::stepping::Stepping // From Player
-        bevy_sprite::sprite::Sprite
-        bevy_transform::components::transform::Transform
-        bevy_transform::components::global_transform::GlobalTransform
-        bevy_asset::handle::Handle<bevy_render::texture::image::Image>
-        bevy_render::view::visibility::Visibility
-        bevy_render::view::visibility::InheritedVisibility
-        bevy_render::view::visibility::ViewVisibility
-        bevy_tdd_book_add_player_sprite::app::Player // From Player
-        bevy_ecs::event::EventUpdateSignal // From Player
-        */
     }
 }
