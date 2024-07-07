@@ -81,7 +81,7 @@ fn add_player_with_sprite_from_assets(
 #[cfg(test)]
 fn count_n_players(app: &App) -> usize {
     let mut n = 0;
-    for c in app.world.components().iter() {
+    for c in app.world().components().iter() {
         // The complete name will be '[crate_name]::Player'
         if c.name().contains("Player") {
             n += 1;
@@ -92,22 +92,22 @@ fn count_n_players(app: &App) -> usize {
 
 #[cfg(test)]
 fn get_player_coordinat(app: &mut App) -> Vec3 {
-    let mut query = app.world.query::<(&Transform, &Player)>();
-    let (transform, _) = query.single(&app.world);
+    let mut query = app.world().query::<(&Transform, &Player)>();
+    let (transform, _) = query.single(&app.world());
     transform.translation
 }
 
 #[cfg(test)]
 fn get_player_scale(app: &mut App) -> Vec3 {
-    let mut query = app.world.query::<(&Transform, &Player)>();
-    let (transform, _) = query.single(&app.world);
+    let mut query = app.world().query::<(&Transform, &Player)>();
+    let (transform, _) = query.single(&app.world());
     transform.scale
 }
 
 #[cfg(test)]
 fn get_player_has_texture(app: &mut App) -> bool {
-    let mut query = app.world.query::<(&Handle<Image>, &Player)>();
-    let (handle, _) = query.single(&app.world);
+    let mut query = app.world().query::<(&Handle<Image>, &Player)>();
+    let (handle, _) = query.single(&app.world());
     return handle.is_strong();
 }
 
@@ -116,7 +116,7 @@ fn get_all_components_names(app: &App) -> Vec<String> {
     use std::str::FromStr;
 
     let mut v: Vec<String> = Vec::new();
-    for c in app.world.components().iter() {
+    for c in app.world().components().iter() {
         v.push(String::from_str(c.name()).unwrap());
     }
     v
@@ -124,7 +124,7 @@ fn get_all_components_names(app: &App) -> Vec<String> {
 
 #[cfg(test)]
 fn print_all_components_names(app: &App) {
-    for c in app.world.components().iter() {
+    for c in app.world().components().iter() {
         println!("{}", c.name())
     }
 }
