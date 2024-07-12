@@ -43,7 +43,7 @@ fn count_n_players(app: &mut App) -> usize {
 }
 
 #[cfg(test)]
-fn get_player_coordinat(app: &mut App) -> Vec2 {
+fn get_player_position(app: &mut App) -> Vec2 {
     let mut query = app.world_mut().query::<(&Transform, &Player)>();
     let (transform, _) = query.single(app.world());
     transform.translation.xy()
@@ -68,18 +68,14 @@ mod tests {
     use super::*;
 
     #[test]
-    fn test_can_create_app() {
-        create_app();
-    }
-
-    #[test]
     fn test_empty_app_has_no_players() {
         let mut app = App::new();
+        app.update();
         assert_eq!(count_n_players(&mut app), 0);
     }
 
     #[test]
-    fn test_create_app_has_a_player() {
+    fn test_our_app_has_a_player() {
         let mut app = create_app();
         app.update();
         assert_eq!(count_n_players(&mut app), 1);
@@ -89,11 +85,11 @@ mod tests {
     fn test_player_is_at_origin() {
         let mut app = create_app();
         app.update();
-        assert_eq!(get_player_coordinat(&mut app), Vec2::new(0.0, 0.0));
+        assert_eq!(get_player_position(&mut app), Vec2::new(0.0, 0.0));
     }
 
     #[test]
-    fn test_player_has_a_default() {
+    fn test_player_has_the_default_size() {
         let mut app = create_app();
         app.update();
         assert_eq!(get_player_scale(&mut app), Vec2::new(1.0, 1.0));
@@ -103,8 +99,6 @@ mod tests {
     fn test_player_has_a_texture() {
         let mut app = create_app();
         app.update();
-        // I can see the player has a texture,
-        // and here I want to test that
         assert!(get_player_has_texture(&mut app));
     }
 }
