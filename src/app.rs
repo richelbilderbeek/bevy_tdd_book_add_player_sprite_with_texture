@@ -10,8 +10,7 @@ pub fn create_app() -> App {
     // The main app will assume it to be absent.
     // Adding DefaultPlugins will cause tests to crash
     if cfg!(test) {
-        app.add_plugins(AssetPlugin::default());
-        app.add_plugins(TaskPoolPlugin::default());
+        app.add_plugins((AssetPlugin::default(), TaskPoolPlugin::default()));
         app.init_asset::<bevy::render::texture::Image>();
     }
     app.add_systems(Startup, add_player);
