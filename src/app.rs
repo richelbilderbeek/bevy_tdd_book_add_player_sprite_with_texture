@@ -14,12 +14,7 @@ pub fn create_app() -> App {
         app.add_plugins(TaskPoolPlugin::default());
         app.init_asset::<bevy::render::texture::Image>();
     }
-
-    let add_player_fn = move |/* no mut? */ commands: Commands,
-                              asset_server: Res<AssetServer>| {
-        add_player(commands, asset_server);
-    };
-    app.add_systems(Startup, add_player_fn);
+    app.add_systems(Startup, add_player);
 
     // Do not do update, as this will disallow to do more steps
     // app.update(); //Don't!
@@ -89,7 +84,7 @@ mod tests {
     }
 
     #[test]
-    fn test_player_has_the_default_size() {
+    fn test_player_has_the_default_scale() {
         let mut app = create_app();
         app.update();
         assert_eq!(get_player_scale(&mut app), Vec2::new(1.0, 1.0));
