@@ -15,9 +15,7 @@ pub fn create_app() -> App {
         app.init_asset::<bevy::render::texture::Image>();
     }
     app.add_systems(Startup, add_player);
-
-    // Do not do update, as this will disallow to do more steps
-    // app.update(); //Don't!
+    app.update();
     app
 }
 
@@ -72,28 +70,24 @@ mod tests {
     #[test]
     fn test_our_app_has_a_player() {
         let mut app = create_app();
-        app.update();
         assert_eq!(count_n_players(&mut app), 1);
     }
 
     #[test]
     fn test_player_is_at_origin() {
         let mut app = create_app();
-        app.update();
         assert_eq!(get_player_position(&mut app), Vec2::new(0.0, 0.0));
     }
 
     #[test]
     fn test_player_has_the_default_scale() {
         let mut app = create_app();
-        app.update();
         assert_eq!(get_player_scale(&mut app), Vec2::new(1.0, 1.0));
     }
 
     #[test]
     fn test_player_has_a_texture() {
         let mut app = create_app();
-        app.update();
         assert!(get_player_has_texture(&mut app));
     }
 }
