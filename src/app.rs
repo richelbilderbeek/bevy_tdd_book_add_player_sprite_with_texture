@@ -29,7 +29,7 @@ pub fn create_app() -> App {
 
 fn add_player(mut commands: Commands, asset_server: Res<AssetServer>) {
     commands.spawn((
-        SpriteBundle {
+        Sprite {
             texture: asset_server.load("bevy_bird_dark.png"),
             ..default()
         },
