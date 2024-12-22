@@ -29,10 +29,7 @@ pub fn create_app() -> App {
 
 fn add_player(mut commands: Commands, asset_server: Res<AssetServer>) {
     commands.spawn((
-        Sprite {
-            texture: asset_server.load("bevy_bird_dark.png"),
-            ..default()
-        },
+        Sprite::from_image(asset_server.load("bevy_bird_dark.png")),
         Player,
     ));
 }
@@ -60,9 +57,9 @@ fn get_player_scale(app: &mut App) -> Vec2 {
 
 #[cfg(test)]
 fn get_player_has_texture(app: &mut App) -> bool {
-    let mut query = app.world_mut().query::<(&Handle<Image>, &Player)>();
-    let (handle, _) = query.single(app.world());
-    handle.is_strong()
+    let mut query = app.world_mut().query::<(&Sprite, &Player)>();
+    let (sprite, _) = query.single(app.world());
+    sprite.image.is_strong()
 }
 
 #[cfg(test)]
